@@ -1,1 +1,1 @@
-print("Python Script, かきくけこ")
+print("Python Script, かきくけこ", end="")
