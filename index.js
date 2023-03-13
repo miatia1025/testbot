@@ -10,14 +10,14 @@ const config = {
 };
 
 // linebot
-const client = new line.Client(config);
+const lineClient = new line.Client(config);
 const app = require('express')();
 
 // redis
 const redis = require('redis');
 
 // create redis client
-const client = redis.createClient({
+const redisClient = redis.createClient({
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
   password: process.env.REDIS_PASSWORD
@@ -39,7 +39,7 @@ function handleEvent(event) {
         type: 'text',
         text: 'Node.js, あいうえお',  
       };
-      return client.replyMessage(event,replyToken, message);
+      return lineClient.replyMessage(event,replyToken, message);
     }else if (['か', 'き', 'く', 'け', 'こ',].includes(messageText)) {
       const python = spawn('python', ['./python_scripts/python_kakikukeko.py', messageText]);
       python.stdout.on('data', (data) => {
@@ -47,7 +47,7 @@ function handleEvent(event) {
           type: 'text',
           text: 'Python Script, かきくけこ',
         };
-        return client.replyMessage(event.replyToken, message);
+        return lineClient.replyMessage(event.replyToken, message);
       });
       python.stderr.on('data', (data) => {
         console.error('stderr: ${data}');
@@ -57,7 +57,7 @@ function handleEvent(event) {
         type: 'text',
         text: 'Received',
       };
-      return client.replyMessage(event.replyToken, message);
+      return lineClient.replyMessage(event.replyToken, message);
     }
   }
   return Promise.resolve(null);
