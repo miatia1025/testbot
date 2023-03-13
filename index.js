@@ -34,13 +34,13 @@ function handleEvent(event) {
   if (event.type === 'message' && event.message.type === 'text') {
     const messageText = event.message.text;
 
-    if (['あ', 'い', 'う', 'え', 'お'].includes(messageText)) {
+    if ([...'あいうえお'].map(c => c.codePointAt(0)).includes(messageText.codePointAt(0))) {
       const message = {
         type: 'text',
         text: 'Node.js, あいうえお',  
       };
       return lineClient.replyMessage(event.replyToken, message);
-    }else if (['か', 'き', 'く', 'け', 'こ',].includes(messageText)) {
+    }else if ([...'かきくけこ'].map(c => c.codePointAt(0)).includes(messageText.codePointAt(0))) {
       const python = spawn('python', ['./python_scripts/python_kakikukeko.py', messageText]);
       python.stdout.on('data', (data) => {
         const message = {
