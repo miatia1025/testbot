@@ -7,5 +7,6 @@ git push
 
 $remote_url = git remote get-url origin
 $commit_hash = git log -1 --pretty=format:%H
-$commit_url = $remote_url -replace "\.git.*$", "" + "/commit/" + $commit_hash
+$commit_url = $remote_url -replace "\.git.*$", ""
+$commit_url =  $commit_url + "/commit/" + $commit_hash
 echo $commit_url
