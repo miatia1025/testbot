@@ -1,3 +1,4 @@
 git add .
-git commit -m "commit miatia"
+set /p commit_msg=Commit message : 
+git commit -m "%commit_msg%"
 git push
