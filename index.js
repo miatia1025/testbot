@@ -77,9 +77,10 @@ async function handleEvent(event) {
 
     if ( event.message.text.startsWith('!s ')) {
       const url = await search(messageText.slice(3));
-      const url_text = {
+      const body = await getHtmlBody(url);
+      const message = {
         type: 'text',
-        text: url,
+        text: body,
       };
       
       message = getHtmlBody(url_text);
