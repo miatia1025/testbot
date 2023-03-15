@@ -82,8 +82,6 @@ async function handleEvent(event) {
         type: 'text',
         text: body,
       };
-      
-      message = getHtmlBody(url_text);
 
       return lineClient.replyMessage(event.replyToken, message);
 
