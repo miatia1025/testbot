@@ -80,10 +80,10 @@ async function handleEvent(event) {
       const body = await getHtmlBody(url);
       const message = {
         type: 'text',
-        text: body,
+        text: url + '\n' + body,
       };
 
-      return lineClient.replyMessage(event.replyToken, url+message);
+      return lineClient.replyMessage(event.replyToken, message);
 
     }else if ([...'あいうえお'].map(c => c.codePointAt(0)).includes(messageText.codePointAt(0))) {
       const message = {
