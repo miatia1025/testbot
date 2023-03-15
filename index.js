@@ -48,7 +48,7 @@ async function search(query) {
 async function getHtmlBody(url) {
   return new Promise((resolve, reject) => {
     https.get(url, (res) => {
-      let htmp = '';
+      let html = '';
 
       res.on('data', (chunk) => {
         html += chunk;
