@@ -4,6 +4,10 @@ const { text } = require('body-parser');
 const { spawn } = require('child_process');
 const { google } = require('googleapis')
 
+// modules for html reading
+const https = require('https');
+const cheerio = require('cheerio');
+
 // get linebot channel access token and secret
 const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
@@ -16,6 +20,7 @@ const app = require('express')();
 
 // redis
 const redis = require('redis');
+const { resolve } = require('path');
 
 // gogle api
 const customsearch = google.customsearch('v1');
@@ -39,6 +44,26 @@ async function search(query) {
   return res.data.items[0].link
 }
 
+// extract from html
+async function getHtmlBody(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      let htmp = '';
+
+      res.on('data', (chunk) => {
+        html += chunk;
+      });
+
+      res.on('end', () => {
+        const $ = cheerio.load(html);
+        const body = $('body').text();
+        resolve(body);
+      });
+    }).on('error', (err) =>{
+      reject(err);
+    });
+  });
+}
 
 app.post('/webhook', line.middleware(config), (req, res) => {
   Promise.all(req.body.events.map(handleEvent)).then((result) =>
@@ -52,7 +77,14 @@ async function handleEvent(event) {
 
     if ( event.message.text.startsWith('!s ')) {
       const url = await search(messageText.slice(3));
-      return lineClient.replyMessage(event.replyToken, { type: 'text', text: url });
+      const url_text = {
+        type: 'text',
+        text: url,
+      };
+      
+      message = getHtmlBody(url_text);
+
+      return lineClient.replyMessage(event.replyToken, message);
 
     }else if ([...'あいうえお'].map(c => c.codePointAt(0)).includes(messageText.codePointAt(0))) {
       const message = {
