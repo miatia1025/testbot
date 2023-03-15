@@ -31,7 +31,7 @@ const redisClient = redis.createClient({
 
 // create google search api
 async function search(query) {
-  const res = await customsearch.css.list({
+  const res = await customsearch.cse.list({
     cx: engineID,
     q: query,
     auth: gApiKey,
@@ -53,7 +53,7 @@ async function handleEvent(event) {
     if ( event.message.text.startsWith('!s ')) {
       const url = await search(messageText.slice(3));
       return lineClient.replyMessage(event.replyToken, { type: 'text', text: url });
-      
+
     }else if ([...'あいうえお'].map(c => c.codePointAt(0)).includes(messageText.codePointAt(0))) {
       const message = {
         type: 'text',
