@@ -19,8 +19,8 @@ const redis = require('redis');
 
 // gogle api
 const customsearch = google.customsearch('v1');
-const gApiKey = process.env.G_SERACH_API_KEY
-const engineID = process.env.G_SEARCH_ENGINE_ID
+const gApiKey = process.env.G_SEARCH_API_KEY;
+const engineID = process.env.G_SEARCH_ENGINE_ID;
 
 // create redis client
 const redisClient = redis.createClient({
