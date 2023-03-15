@@ -32,9 +32,9 @@ const redisClient = redis.createClient({
 // create google search api
 async function search(query) {
   const res = await customsearch.cse.list({
+    auth: gApiKey,
     cx: engineID,
     q: query,
-    auth: gApiKey,
   });
   return res.data.items[0].link
 }
